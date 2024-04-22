@@ -1,3 +1,44 @@
 html {
     background-color: black;
 }
+
+h1 {
+    color: purple;
+
+}
+#result {
+    color: white;
+}
+#id {
+    width: 40px;
+}
+body {
+    background-color: black;
+}
+html {
+    color: white;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    width: 40%;
+    gap: 10px;
+    margin: 15px;
+}
+
+form label {
+    display: flex;
+    justify-content: center;
+}
+
+form button {
+    width: 65px;
+    justify-content: center;
+}
+
+#submitBut {
+    display: flex;
+    justify-content: flex-end;
+}
