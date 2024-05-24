@@ -41,7 +41,7 @@ app.post('/add-drink', async (req, res) => {
             instructions: instructions,
         });
         await newDrink.save();
-        res.send(`Added ${drinkName}!`);
+        res.redirect('/?message=Added ${encodeURIComponent(drinkName)}!');
     } catch (err) {
         res.status(500).send('Error adding drink');
     }
