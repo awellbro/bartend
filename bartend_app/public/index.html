@@ -5,21 +5,21 @@
     <!--<script src = "mongodb.js" defer></script>-->
     <link rel = "stylesheet" href = "styles.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BarBuddy</title>
+    <title>brtndr</title>
     <script>
-      document.addEventListener("DOMContentLoaded", function(){
-        const urlParams = new URLSearchParams(window.locations.search);
-        const message = urlParams.get('message');
-        if(message){
-          alert(message);
+      window.onload = function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const drinkName = urlParams.get('drinkName');
+        if(drinkName){
+          alert(`Added ${drinkName}!`);
         }
-      });
+      };
     </script>
 </head>
 <!DOCTYPE html>
 <body>
   <div id = "title">
-    <h1>BarBuddy</h1>
+    <h1>brtndr</h1>
     </div>
     <div id = "content">
       <div id = "directory">

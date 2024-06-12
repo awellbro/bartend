@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const mongoDB = 'mongodb+srv://awellbro:Awellbro@drinks.gg5mw3e.mongodb.net/drinksDb?retryWrites=true&w=majority&appName=drinks';
 mongoose.set("strictQuery", false);
 
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoDB)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
@@ -41,7 +41,7 @@ app.post('/add-drink', async (req, res) => {
             instructions: instructions,
         });
         await newDrink.save();
-        res.redirect('/?message=Added ${encodeURIComponent(drinkName)}!');
+        res.redirect('/?drinkName=' + encodeURIComponent(drinkName));
     } catch (err) {
         res.status(500).send('Error adding drink');
     }
