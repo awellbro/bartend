@@ -1,17 +1,28 @@
 var createError = require('http-errors');
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require("mongoose");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-const mongoose = require("mongoose");
+// Middleware to parse form data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// MongoDB connection
+const mongoDB = 'mongodb+srv://awellbro:Awellbro@drinks.gg5mw3e.mongodb.net/drinksDb?retryWrites=true&w=majority&appName=drinks';
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://awellbro:Awellbro@drinks.gg5mw3e.mongodb.net/drinksDb?retryWrites=true&w=majority&appName=drinks"
+
+mongoose.connect(mongoDB)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log(err));
 
 main().catch((err)=>console.log(err));
 async function main(){
