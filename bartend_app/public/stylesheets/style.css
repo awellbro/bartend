@@ -1,8 +1,87 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+  background-color: black;
+  color: white;
+  height: 100vh;
 }
 
-a {
-  color: #00B7FF;
+body{
+  height: 100%;
+  width: 100%;
+}
+
+#result {
+  color: white;
+}
+
+#title {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#title h1 {
+  font-size: 60px;
+  margin: 10px 60px;
+  color: purple;
+}
+
+#content {
+  display: flex;
+  flex-direction: row;
+}
+
+#daForm{
+  display: flex;
+  flex: 1;
+  width: 70%;
+  margin: 5%;
+  justify-content: flex-end;
+}
+
+#daForm form {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  width: 70%;
+  gap: 10px;
+  margin: 5px;
+  flex: 1;
+}
+
+form label {
+  display: flex;
+  justify-content: center;
+}
+
+form button {
+  width: 65px;
+  justify-content: center;
+}
+
+#submitBut {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
+#directory {
+  display: flex;
+  flex-direction: column;
+  margin: 5%;
+  max-width: 30%;
+  width: 30%;
+  gap: 10px;
+}
+
+#directory button {
+  width: 100px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 18px;
+}
+
+#directory button:hover{
+  font-weight: bold;
 }
