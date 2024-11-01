@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
 
+var catalogRouter = require('./routes/catalog');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -14,16 +15,16 @@ var app = express();
 // Middleware to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB connection
 const mongoDB = 'mongodb+srv://awellbro:Awellbro@drinks.gg5mw3e.mongodb.net/drinksDb?retryWrites=true&w=majority&appName=drinks';
 mongoose.set("strictQuery", false);
 
-mongoose.connect(mongoDB)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+//mongoose.connect(mongoDB)
+//   .then(() => console.log('MongoDB connected'))
+//    .catch(err => console.log(err));
 
+//connect to MongoDB
 main().catch((err)=>console.log(err));
 async function main(){
   await mongoose.connect(mongoDB);
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

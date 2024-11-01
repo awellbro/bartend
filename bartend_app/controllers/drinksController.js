@@ -1,10 +1,14 @@
-const Drinks = require('..models/drinks');
+const Drinks = require('../models/drinks');
 
 const asyncHandler = require('express-async-handler');
 
 exports.index = asyncHandler(async (req, res, next) => {
-    res.send('Not Implemented: Drink list');
+    res.send('Not Implemented: Drink index');
 });
+
+exports.drinks_list = asyncHandler(async (req, res, next) => {
+    res.send('Not Here: drink list')
+})
 
 exports.drinks_detail = asyncHandler(async (req, res, next) => {
     res.send(`Not Implemented: Drink Detail: ${req.params.id}`);
@@ -30,6 +34,6 @@ exports.drinks_update_get = asyncHandler(async (req, res, next) => {
     res.send('Not Here: Drinks update GET');
 });
 
-exports.drink_update_post = asyncHandler(async (req, res, next) => {
+exports.drinks_update_post = asyncHandler(async (req, res, next) => {
     res.send('Not Here: Drinks update POST')
 })
