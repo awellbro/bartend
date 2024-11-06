@@ -3,12 +3,22 @@ const Drinks = require('../models/drinks');
 const asyncHandler = require('express-async-handler');
 
 exports.index = asyncHandler(async (req, res, next) => {
-    res.send('Not Implemented: Drink index');
+    const numDrinks = await (Drinks.countDocuments({}).exec())
+
+    res.render("layout", {
+        content: 'index',
+        title: 'BRTNDR',
+        drink_count: numDrinks,
+    });
 });
 
 exports.drinks_list = asyncHandler(async (req, res, next) => {
-    res.send('Not Here: drink list')
-})
+    const allDrinks = await Drinks.find({})
+        .populate("drinkName")
+        .exec();
+
+    res.render("layout", {content: 'drinks_list', title: 'Drink List', drinks_list: allDrinks});
+});
 
 exports.drinks_detail = asyncHandler(async (req, res, next) => {
     res.send(`Not Implemented: Drink Detail: ${req.params.id}`);

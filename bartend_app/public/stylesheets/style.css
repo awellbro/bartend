@@ -1,13 +1,18 @@
 html {
-    background-color: black;
-    color: white;
-    height: 100vh;
+  background-color: black;
+  color: white;
+  height: 100vh;
   }
   
-  .sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
-    list-style: none;
+.sidebar-nav {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
   }
   
-  
+body{
+  background-color: black;
+  color: white;
+  height: 100%;
+  width: 100%;
+  }

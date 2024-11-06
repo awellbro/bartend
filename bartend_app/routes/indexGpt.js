@@ -11,9 +11,9 @@ var Drink = require('../models/drinks');
 //  });
 
 // HTML form to add a new drink
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
+//router.get('/', (req, res) => {
+//  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+//});
 
 // Handle form submission
 router.post('/add-drink', async (req, res) => {

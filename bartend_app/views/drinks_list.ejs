@@ -1,0 +1,12 @@
+<h1><%= title %></h1>
+<% if (drinks_list.length) { %>
+    <ul>
+        <% drinks_list.forEach(function(drink) { %>
+            <li>
+                <a href="<%= drink.url %>"><%= drink.drinkName %></a>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+            <p>There are no books.</p>
+        <% } %>
