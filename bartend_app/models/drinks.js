@@ -11,4 +11,4 @@ DrinkSchema.virtual("url").get(function(){
     return `/catalog/drink/${this._id}`
 });
 
-module.exports = mongoose.model("Drink", DrinkSchema)
+module.exports = mongoose.model("Drinks", DrinkSchema)

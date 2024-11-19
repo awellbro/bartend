@@ -7,7 +7,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 
     res.render("layout", {
         content: 'index',
-        title: 'BRTNDR',
+        title: 'brtndr',
         drink_count: numDrinks,
     });
 });
@@ -21,7 +21,20 @@ exports.drinks_list = asyncHandler(async (req, res, next) => {
 });
 
 exports.drinks_detail = asyncHandler(async (req, res, next) => {
-    res.send(`Not Implemented: Drink Detail: ${req.params.id}`);
+   const [drink, ingredArr] = await Promise.all([
+    Drinks.findById(req.params.id).exec(),
+    Drinks.findById(req.params.id).select('ingredients').exec(),
+    ]);
+    // if ingredArr exists, access ingredients value. else return empty array.
+    const ingred = ingredArr?.ingredients || [];
+    const formattedIngred = ingred.join(' | ');
+
+   res.render('layout', {
+    content: 'drinkDetails',
+    title: drink.drinkName,
+    drink: drink,
+    ingred: formattedIngred,
+   });
 });
 
 exports.drinks_create_get = asyncHandler(async (req, res, next) => {
