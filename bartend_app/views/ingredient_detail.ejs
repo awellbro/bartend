@@ -1,0 +1,9 @@
+<h1><%= drink.name %></h1>
+
+<div style = 'margin-left: 20px; margin-top: 20px;'>
+<% if (ingredient.length) { %>
+    <a href = '<%= ingredient.url %>'><%= ingredient.name %></a>
+<% } else { %>
+    <p>This ingredient doesnt not exist</p>
+<% } %>
+</div>
