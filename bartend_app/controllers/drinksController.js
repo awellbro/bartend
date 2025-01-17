@@ -1,4 +1,5 @@
 const Drinks = require('../models/drinks');
+const Ingredients = require('../model/ingredients');
 const asyncHandler = require('express-async-handler');
 const {body, validationResult} = require('express-validator');
 
