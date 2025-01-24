@@ -29,4 +29,5 @@ exports.ingredient_detail = asyncHandler(async(req, res, next) => {
         params: req.params.id,
         drinks: drinks,
     });
+
 })
