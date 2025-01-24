@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const drinks_controller = require('../controllers/drinksController');
+const ingredient_controller = require('../controllers/ingredientController')
 
 // catalog home
 router.get('/', drinks_controller.index);
@@ -29,5 +30,8 @@ router.get('/drink/:id', drinks_controller.drinks_detail);
 
 //GET for a list of all drinks
 router.get('/drinks', drinks_controller.drinks_list);
+
+//GET for Ingredient detail
+router.get('/ingredient/:id', ingredient_controller.ingredient_detail);
 
 module.exports = router;

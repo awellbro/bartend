@@ -1,4 +1,5 @@
 const Drinks = require('../models/drinks');
+const Ingredients = require('../models/ingredients');
 const asyncHandler = require('express-async-handler');
 const {body, validationResult} = require('express-validator');
 
@@ -20,21 +21,29 @@ exports.drinks_list = asyncHandler(async (req, res, next) => {
     res.render("layout", {content: 'drinks_list', title: 'Drink List', drinks_list: allDrinks});
 });
 
+// TODO: we need to cycle through each ingredient listed within the Drink detail page and
+// reference the Ingredient.url to get to detail page.
 exports.drinks_detail = asyncHandler(async (req, res, next) => {
-   const [drink, ingredArr] = await Promise.all([
-    Drinks.findById(req.params.id).exec(),
-    Drinks.findById(req.params.id).select('ingredients').exec(),
+   const [drink, drinkIngred] = await Promise.all([
+    Drinks.findById(req.params.id).populate('ingredients').exec(),
+    Ingredients.find({drinks: req.params.id}).exec(),
     ]);
-    // if ingredArr exists, access ingredients value. else return empty array.
-    const ingred = ingredArr?.ingredients || [];
-    const formattedIngred = ingred.join(' | ');
+
+    // // if ingredArr exists, access ingredients value. else return empty array.
+    // const ingred = drinkIngred?.ingredients || [];
+    // const formattedIngred = ingred.join(' | ');
 
    res.render('layout', {
     content: 'drinkDetails',
     title: drink.drinkName,
-    drink: drink,
-    ingred: formattedIngred,
-   });
+    drinks: drink,
+    // works:
+    drinkIngred: drink.ingredients,
+    // does not work
+    //drinkIngred: drinkIngred,
+    
+   },
+);
 });
 
 exports.drinks_create_get = asyncHandler(async (req, res, next) => {
@@ -45,7 +54,7 @@ exports.drinks_create_get = asyncHandler(async (req, res, next) => {
         title: 'create new drink',
         drink_list: allDrinks,
         errors: '',
-        drink: '',
+        drinks: '',
     });
 });
 
@@ -68,28 +77,45 @@ exports.drinks_create_post = [
         //extract any errors present from request
         const errors = validationResult(req);
 
-        //create Drink object with cleaned data
-        const drink = new Drinks({
-            drinkName: req.body.drinkName,
-            ingredients: req.body.ingredients.split(' ,').map(item => item.trim()),
-            instructions: req.body.instructions,
-        });
+        const ingredientNames = req.body.ingredients
+            .split(', ')
+            .map((item) => item.trim());
 
         if(!errors.isEmpty()){
             // if there are errors
             res.render('layout', {
                 content: 'drink_form',
                 title: 'create new drink',
-                drink: drink,
+                drinks: {drinkName: req.body.drinkName, ingredients: req.body.ingredientNames, instructions: req.body.instructions},
                 errors: errors.array(),
             });
             return
-        } else {
-            //if no errors
-            //check if drink name already exists
-            const drinkExists = await Drinks.findOne({drinkName: req.body.drinkName})
-            .collation({locale: 'en', strength: 2})
-            .exec()
+         } 
+    
+    const ingredientArr = [];
+
+for (const name of ingredientNames){
+    let ingredient = await Ingredients.findOne({name}).exec();
+    if(ingredient){
+        ingredientArr.push(ingredient._id);
+    } else {
+        ingredient = new Ingredients({name});
+        await ingredient.save();   
+        ingredientArr.push(ingredient._id);
+    };
+};
+
+//create Drink
+    const drink = new Drinks({
+        drinkName: req.body.drinkName,
+        ingredients: ingredientArr,
+        instructions: req.body.instructions,
+    });
+
+//check if drink name already exists
+    const drinkExists = await Drinks.findOne({drinkName: req.body.drinkName})
+        .collation({locale: 'en', strength: 2})
+        .exec()
 
         if(drinkExists){
             //redirect to drink detail page if drink exists
@@ -99,7 +125,7 @@ exports.drinks_create_post = [
             await drink.save();
             res.redirect(drink.url);
         }
-    }
+        
     }),
 ];
 

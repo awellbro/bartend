@@ -1,5 +1,17 @@
 <h1><%= title %></h1>
 
-<p><strong>Ingredients: </strong><%= ingred %></p>
-<p><strong>Instructions: </strong><%= drink.instructions %></p>
+<div style="margin-left:20px;margin-top: 20px">
+    <div style="display:flex;gap:10px;border:15px">
+    <h4 style="font-size:1rem;text-align:center;margin: 0;">Ingredients: </h4> 
+    <% if (drinkIngred){ %>
+        <% drinkIngred.forEach(ingred => { %>
+            <a href="<%= ingred.url %>" style="font-size:1rem"><%= ingred.name %></a> |
+        <% }) %>   
+    <% } else {%>
+        <p>This drink doesnt have ingredients...?</p>
+    <% } %>
+    </div>  
+    <h4 style="font-size:1rem;padding:1rem 0rem;">Instructions: <%= drinks.instructions %></h4>  
+</div>
+
 

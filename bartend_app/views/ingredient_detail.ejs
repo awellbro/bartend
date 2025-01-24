@@ -1,0 +1,17 @@
+<h1><%= ingredient.name %></h1>
+
+<div style = 'margin-left: 20px; margin-top: 20px;'>
+
+<ul>
+<% if (drinks) { %>
+    <% drinks.forEach(drink => { %>
+        <% drink.ingredients.forEach(ingred => { %>
+            <% if(ingred._id == params){ %>
+                <li><a href="<%= drink.url %>"><%= drink.drinkName %></a></li>
+            <% } %>
+        <% }) %>
+    <% }) %>
+<% } %>
+</ul>
+</div>  
+
