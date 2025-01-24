@@ -24,20 +24,26 @@ exports.drinks_list = asyncHandler(async (req, res, next) => {
 // TODO: we need to cycle through each ingredient listed within the Drink detail page and
 // reference the Ingredient.url to get to detail page.
 exports.drinks_detail = asyncHandler(async (req, res, next) => {
-   const [drink, ingredArr] = await Promise.all([
-    Drinks.findById(req.params.id).exec(),
-    Drinks.findById(req.params.id).select('ingredients').exec(),
+   const [drink, drinkIngred] = await Promise.all([
+    Drinks.findById(req.params.id).populate('ingredients').exec(),
+    Ingredients.find({drinks: req.params.id}).exec(),
     ]);
-    // if ingredArr exists, access ingredients value. else return empty array.
-    const ingred = ingredArr?.ingredients || [];
-    const formattedIngred = ingred.join(' | ');
+
+    // // if ingredArr exists, access ingredients value. else return empty array.
+    // const ingred = drinkIngred?.ingredients || [];
+    // const formattedIngred = ingred.join(' | ');
 
    res.render('layout', {
     content: 'drinkDetails',
     title: drink.drinkName,
-    drink: drink,
-    ingred: formattedIngred,
-   });
+    drinks: drink,
+    // works:
+    drinkIngred: drink.ingredients,
+    // does not work
+    //drinkIngred: drinkIngred,
+    
+   },
+);
 });
 
 exports.drinks_create_get = asyncHandler(async (req, res, next) => {
@@ -48,7 +54,7 @@ exports.drinks_create_get = asyncHandler(async (req, res, next) => {
         title: 'create new drink',
         drink_list: allDrinks,
         errors: '',
-        drink: '',
+        drinks: '',
     });
 });
 
@@ -80,7 +86,7 @@ exports.drinks_create_post = [
             res.render('layout', {
                 content: 'drink_form',
                 title: 'create new drink',
-                drink: {drinkName: req.body.drinkName, ingredients: req.body.ingredientNames, instructions: req.body.instructions},
+                drinks: {drinkName: req.body.drinkName, ingredients: req.body.ingredientNames, instructions: req.body.instructions},
                 errors: errors.array(),
             });
             return
