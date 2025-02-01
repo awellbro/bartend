@@ -130,11 +130,23 @@ for (const name of ingredientNames){
 ];
 
 exports.drinks_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('Not Here: Drinks delete GET');
+    const drink = await (Drinks.findById(req.params.id).exec())
+
+    if(!drink){
+        res.redirect('/catalog/drinks')
+    } else {
+        res.render('layout', {
+        content: 'drink_delete',
+        title: 'Drink Delete',
+        drink: drink,
+    });
+    }
 });
 
 exports.drinks_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('Not Here: Drinks delete POST');
+
+    Drinks.findByIdAndDelete(req.body.drinkid).exec();
+    res.redirect('/catalog/drinks');
 });
 
 exports.drinks_update_get = asyncHandler(async (req, res, next) => {

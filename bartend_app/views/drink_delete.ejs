@@ -1,0 +1,14 @@
+<h1>Delete Drink: <%= drink.drinkName %></h1>
+
+<% if(drink){ %>
+<p>Are you sure you want to delete the <%= drink.drinkName %>?</p>
+
+<form method="POST">
+    <div class="form-group">
+        <input id="drinkid" class="form-control" type="hidden" name="drinkid" value="<%= drink._id %>"> 
+    </div>
+
+    <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+
+<% } %>

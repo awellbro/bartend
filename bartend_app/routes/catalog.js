@@ -14,10 +14,10 @@ router.get('/drink/create', drinks_controller.drinks_create_get);
 router.post('/drink/create', drinks_controller.drinks_create_post);
 
 //GET request for deleting a drink
-router.get('/drink/delete', drinks_controller.drinks_delete_get);
+router.get('/drink/:id/delete', drinks_controller.drinks_delete_get);
 
 //POST request for deleting a drink
-router.post('/drink/delete', drinks_controller.drinks_delete_post);
+router.post('/drink/:id/delete', drinks_controller.drinks_delete_post);
 
 //GET request for updating a drink
 router.get('/drink/update', drinks_controller.drinks_update_get);
