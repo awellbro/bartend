@@ -1,0 +1,12 @@
+<h1><%= title %></h1>
+<% if (ingredients_list.length) { %>
+    <ul>
+        <% ingredients_list.forEach(function(ingred) { %>
+            <li>
+                <a href="<%= ingred.url %>"><%= ingred.name %></a>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+            <p>There are no drinks.</p>
+        <% } %>

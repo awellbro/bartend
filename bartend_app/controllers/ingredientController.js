@@ -4,6 +4,17 @@ const asyncHandler = require('express-async-handler');
 const {body, validationResult} = require('express-validator');
 
 // TODO: display all ingredients? (v.2)
+exports.ingredients = asyncHandler(async(req, res, next) => {
+    const allIngreds = await Ingredients.find({})
+        .populate('name')
+        .exec();
+
+    res.render('layout', {
+        content: 'ingredients',
+        title: "Ingredients",
+        ingredients_list: allIngreds,
+    });
+});
 
 // TODO: display details for each ingredient (v.1)
 exports.ingredient_detail = asyncHandler(async(req, res, next) => {
@@ -30,4 +41,39 @@ exports.ingredient_detail = asyncHandler(async(req, res, next) => {
         drinks: drinks,
     });
 
-})
+});
+
+exports.ingredient_delete_get = asyncHandler(async(req, res, next) => {
+    const [ingredient, drinksInGredient] = await Promise.all([
+        Ingredients.findById(req.params.id).exec(),
+        Drinks.find({ingredients: req.params.id}, "name").exec(),
+    ]);
+
+    if(ingredient){
+        res.render('layout', {
+            content: 'ingredient_delete',
+            title: 'Delete Ingredient',
+            ingredient: ingredient,
+            ingredient_drinks: drinksInGredient,
+        });
+    };
+});
+
+exports.ingredient_delete_post = asyncHandler(async(req, res, next) => {
+    const [ingredient, drinksInGredient] = await Promise.all([
+        Ingredients.findById(req.params.id).exec(),
+        Drinks.find({ingredients: req.params.id}, "name").exec(),
+    ]);
+
+    if(drinksInGredient.length > 0){
+        res.render('layout', {
+            content: 'ingredient_delete',
+            title: 'Delete Ingredient',
+            ingredient: ingredient,
+            ingredient_drinks: drinksInGredient,
+        });
+    } else {
+        Ingredients.findByIdAndDelete(req.body.ingredid).exec();
+        res.redirect('/catalog/ingredients');
+    }
+});

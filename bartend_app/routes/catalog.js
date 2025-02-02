@@ -31,7 +31,15 @@ router.get('/drink/:id', drinks_controller.drinks_detail);
 //GET for a list of all drinks
 router.get('/drinks', drinks_controller.drinks_list);
 
+// ingredients controllers
+
 //GET for Ingredient detail
 router.get('/ingredient/:id', ingredient_controller.ingredient_detail);
+
+router.get('/ingredient/:id/delete', ingredient_controller.ingredient_delete_get);
+
+router.post('/ingredient/:id/delete', ingredient_controller.ingredient_delete_post);
+
+router.get('/ingredients', ingredient_controller.ingredients)
 
 module.exports = router;
