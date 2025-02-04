@@ -1,6 +1,14 @@
 <h1>Delete Ingredient: <%= ingredient.name %></h1>
 
-<% if(ingredient){ %>
+<% if(ingredient_drinks.length > 0){ %>
+    <p>The ingredient you are deleting is associated with the following drinks: </p>
+        <ul>
+        <% ingredient_drinks.forEach(drink => { %>
+            <li><a href="<%= drink.url %>"><%= drink.drinkName %></a></li>
+        <% }) %>
+    </ul>
+    <p>The drinks associated with this ingredient need to be deleted before this ingredient can be deleted.</p>
+<% } else { %>
 <p>Are you sure you want to delete the <%= ingredient.name %></p>
 
 <form method="POST">

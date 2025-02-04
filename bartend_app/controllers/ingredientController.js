@@ -46,7 +46,7 @@ exports.ingredient_detail = asyncHandler(async(req, res, next) => {
 exports.ingredient_delete_get = asyncHandler(async(req, res, next) => {
     const [ingredient, drinksInGredient] = await Promise.all([
         Ingredients.findById(req.params.id).exec(),
-        Drinks.find({ingredients: req.params.id}, "name").exec(),
+        Drinks.find({ingredients: req.params.id}).populate('drinkName').exec(),
     ]);
 
     if(ingredient){
@@ -62,7 +62,7 @@ exports.ingredient_delete_get = asyncHandler(async(req, res, next) => {
 exports.ingredient_delete_post = asyncHandler(async(req, res, next) => {
     const [ingredient, drinksInGredient] = await Promise.all([
         Ingredients.findById(req.params.id).exec(),
-        Drinks.find({ingredients: req.params.id}, "name").exec(),
+        Drinks.find({ingredients: req.params.id}).populate('drinkName').exec(),
     ]);
 
     if(drinksInGredient.length > 0){

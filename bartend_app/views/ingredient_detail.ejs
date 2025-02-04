@@ -1,7 +1,7 @@
 <h1><%= ingredient.name %></h1>
 
+<p>Drinks that contain <%= ingredient.name %>:</p>
 <div style = 'margin-left: 20px; margin-top: 20px;'>
-
 <ul>
 <% if (drinks) { %>
     <% drinks.forEach(drink => { %>
@@ -16,5 +16,5 @@
 </div>
 
 <hr>
-<p><a href="<%= ingredient.url + '/delete'%>">Delete Drink</a></p>
+<p><a href="<%= ingredient.url + '/delete'%>">Delete Ingredient</a></p>
 
