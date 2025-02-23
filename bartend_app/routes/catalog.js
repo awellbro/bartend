@@ -20,10 +20,10 @@ router.get('/drink/:id/delete', drinks_controller.drinks_delete_get);
 router.post('/drink/:id/delete', drinks_controller.drinks_delete_post);
 
 //GET request for updating a drink
-router.get('/drink/update', drinks_controller.drinks_update_get);
+router.get('/drink/:id/update', drinks_controller.drinks_update_get);
 
 //POST request for updating a drink
-router.post('/drink/update', drinks_controller.drinks_update_post);
+router.post('/drink/:id/update', drinks_controller.drinks_update_post);
 
 //GET for a specific drink
 router.get('/drink/:id', drinks_controller.drinks_detail);

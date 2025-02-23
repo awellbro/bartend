@@ -53,7 +53,7 @@ exports.drinks_create_get = asyncHandler(async (req, res, next) => {
         content: 'drink_form',
         title: 'create new drink',
         drink_list: allDrinks,
-        errors: '',
+        errors: [],
         drinks: '',
     });
 });
@@ -150,9 +150,84 @@ exports.drinks_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.drinks_update_get = asyncHandler(async (req, res, next) => {
-    res.send('Not Here: Drinks update GET');
+    const drinks = await (
+        Drinks.findById(req.params.id).populate('ingredients').exec()
+    );
+
+    if(drinks === null){
+        const err = new Error('Drink not found');
+        err.status = 404;
+        return next(err);
+    }
+
+    const ingredients = drinks.ingredients.map(ingred => (ingred.name));
+
+    res.render('layout', {
+        content: 'drink_form_update',
+        title: 'Update Drink',
+        drinks: drinks,
+        ingredients: ingredients,
+        errors: [],
+    });
 });
 
-exports.drinks_update_post = asyncHandler(async (req, res, next) => {
-    res.send('Not Here: Drinks update POST')
-})
+exports.drinks_update_post = [
+    //valitize
+    body('drinkName', 'drink name cannot be blank.')
+    .trim()
+    .isLength({min: 3})
+    .escape(),
+
+    body('ingredients').escape(),
+
+    body('instructions', 'please enter the instructions to create the drink')
+    .trim()
+    .isLength({min: 3})
+    .escape(),
+
+    //process request
+    asyncHandler(async (req, res, next) => {
+        //extract any errors present from request
+        const errors = validationResult(req);
+    console.log(typeof req.body.ingredients)
+        const ingredientNames = req.body.ingredients
+            .split(',')
+            .map((item) => item.trim());
+    
+        const ingredientArr = [];
+
+        for (const name of ingredientNames){
+            let ingredient = await Ingredients.findOne({name}).exec();
+            if(ingredient){
+                ingredientArr.push(ingredient._id);
+            } else {
+                ingredient = new Ingredients({name});
+                await ingredient.save();   
+                ingredientArr.push(ingredient._id);
+            };
+        };
+    
+        //create Drink
+        const drinks = new Drinks({
+            drinkName: req.body.drinkName,
+            ingredients: ingredientArr,
+            instructions: req.body.instructions,
+            _id: req.params.id, // required to not change orignial ID
+        });
+
+        if(!errors.isEmpty()){
+            // if there are errors
+            res.render('layout', {
+            content: 'drink_form',
+            title: 'create new drink',
+            drinks: {drinkName: req.body.drinkName, ingredients: req.body.ingredientNames, instructions: req.body.instructions},
+            errors: errors.array(),
+            });
+        return;
+    } else {
+        // obj.FBIAU(id of document, object containing fields/values to update,{object of options})
+        const updatedDrink = await Drinks.findByIdAndUpdate(req.params.id, drinks, {});
+        res.redirect(updatedDrink.url);
+    }
+        
+})]
